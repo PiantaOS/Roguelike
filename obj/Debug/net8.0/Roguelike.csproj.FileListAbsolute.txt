@@ -12,3 +12,4 @@ C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\refint\Roguelike.d
 C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\Roguelike.pdb
 C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\Roguelike.genruntimeconfig.cache
 C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\ref\Roguelike.dll
+C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\Roguelike.sourcelink.json

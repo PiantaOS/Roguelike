@@ -10,5 +10,6 @@ namespace Roguelike {
         Wall,
         Player,
         Floor,
+        Enemy,
     }
 }

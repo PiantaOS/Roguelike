@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace Roguelike {
     internal class Grid {
         private Tile[,] tiles;
-        public int CurrentTurn = 0;
         public Grid(int x, int y) {
             tiles = new Tile[x, y];
 
@@ -18,10 +17,6 @@ namespace Roguelike {
                     tiles[i, j].TileType = TileType.Empty;
                 }
             }
-        }
-        public void PassTime() {
-            CurrentTurn++;
-            //for each enemy in tiles.enemies, do stuff
         }
         public int GetDimension(int dimension) {
             return tiles.GetLength(dimension);
