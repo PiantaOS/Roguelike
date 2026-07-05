@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Roguelike {
+﻿namespace Roguelike {
     internal struct Vector2Int {
         public int x;
         public int y;
         public static Vector2Int Zero => new Vector2Int(0, 0);
+        public System.Numerics.Vector2 FloatVector => new System.Numerics.Vector2((float)x, (float)y);
         public Vector2Int(int x, int y) {
             this.x = x;
             this.y = y;
@@ -19,14 +14,14 @@ namespace Roguelike {
         public Vector2Int Clamp() {
             return new Vector2Int(Math.Clamp(x, -1, 1), Math.Clamp(y, -1, 1));
         }
-        public static Vector2Int operator+(Vector2Int lhs, Vector2Int rhs) {
+        public static Vector2Int operator +(Vector2Int lhs, Vector2Int rhs) {
             return new Vector2Int(lhs.x + rhs.x, lhs.y + rhs.y);
         }
         public static Vector2Int operator -(Vector2Int lhs, Vector2Int rhs) {
             return new Vector2Int(lhs.x - rhs.x, lhs.y - rhs.y);
         }
         public static bool operator ==(Vector2Int lhs, Vector2Int rhs) {
-            if(lhs.x == rhs.x && lhs.y == rhs.y) return true;
+            if (lhs.x == rhs.x && lhs.y == rhs.y) return true;
             return false;
         }
         public static bool operator !=(Vector2Int lhs, Vector2Int rhs) {

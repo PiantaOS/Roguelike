@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Roguelike {
+﻿namespace Roguelike {
     internal class Enemy {
         Vector2Int currentPosition;
         TileType stoodOnTile;
@@ -29,10 +23,10 @@ namespace Roguelike {
         public Vector2Int GetPosition() { return currentPosition; }
         public void CalculateMoveBasic(Player player, Grid grid) {
             Vector2Int direction = player.GetPosition() - currentPosition;
-            if(Math.Abs(direction.x) > Math.Abs(direction.y)) {
-                if(TryMove(new Vector2Int(direction.Clamp().x, 0), player, grid)) { return; }
+            if (Math.Abs(direction.x) > Math.Abs(direction.y)) {
+                if (TryMove(new Vector2Int(direction.Clamp().x, 0), player, grid)) { return; }
             }
-            if(TryMove(new Vector2Int(0, direction.Clamp().y), player, grid)) { return; }
+            if (TryMove(new Vector2Int(0, direction.Clamp().y), player, grid)) { return; }
             TryMove(Vector2Int.Zero, player, grid);
         }
         private bool TryMove(Vector2Int direction, Player player, Grid grid) {
@@ -46,13 +40,14 @@ namespace Roguelike {
             }
             switch (nextTile) {
                 case TileType.Empty:
-                    Console.WriteLine("Enemy tried to move to empty tile");
                     break;
                 case TileType.Enemy:
                     return false;
                 case TileType.Wall:
                     return false;
                 case TileType.Floor:
+                case TileType.Corridor:
+                case TileType.Door:
                     Move(currentPosition + direction, nextTile, grid);
                     return true;
             }

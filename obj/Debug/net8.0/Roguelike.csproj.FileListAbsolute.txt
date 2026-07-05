@@ -13,3 +13,6 @@ C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\Roguelike.pdb
 C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\Roguelike.genruntimeconfig.cache
 C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\ref\Roguelike.dll
 C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\Roguelike.sourcelink.json
+C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\Roguelike.csproj.AssemblyReference.cache
+C:\Users\monst\Documents\Roguelike\Roguelike\bin\Debug\net8.0\Pastel.dll
+C:\Users\monst\Documents\Roguelike\Roguelike\obj\Debug\net8.0\Roguelike.csproj.CopyComplete
