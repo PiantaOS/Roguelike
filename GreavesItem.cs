@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Roguelike {
-    internal class RingItem : PassiveItem {
+    internal class GreavesItem : PassiveItem {
         protected List<string> _materialNames = [
+            "Leather",
             "Iron",
             "Silver",
             "Golden",
@@ -16,6 +16,7 @@ namespace Roguelike {
             "Titanium",
             "Copper",
             "Diamond",
+            "Chainmail",
             "Steel"
         ];
 
@@ -55,30 +56,33 @@ namespace Roguelike {
             "Earth",
             "Stone",
             "the Forge",
-            "Curiosity",
+            "Speed",
+            "Haste",
+            "Weight"
         ];
-        public RingItem(string name, int magnitude) {
+        public GreavesItem(string name, int magnitude) {
             Name = name;
             _magnitude = magnitude;
-            SlotType = ItemSlotType.Ring;
+            SlotType = ItemSlotType.Greaves;
         }
 
-        public RingItem() {
-            SlotType = ItemSlotType.Ring;
+        public GreavesItem() {
+            SlotType = ItemSlotType.Greaves;
+            SetRandomStatMagnitude(0);
+            SetRandomName();
         }
         protected override void ApplyStatBoost(Player player) {
-            player.MaxHealth += _magnitude;
-            player.AddHealth(_magnitude);
+            player.DamageReduction += _magnitude;
         }
 
         protected override void RemoveStatBoost(Player player) {
-            player.MaxHealth -= _magnitude;
-            player.AddHealth(-_magnitude); // Probably shoulnd't do this
+            player.DamageReduction -= _magnitude;
         }
 
         public override void SetRandomStatMagnitude(int floor) {
-            int baseStat = (floor + 1) * 7;
-            baseStat += new Random().Next(-floor * 3, floor * 3);
+            int baseStat = (floor + 1) * 2;
+            baseStat += new Random().Next(-floor * 8, floor * 8);
+            baseStat = Math.Clamp(baseStat, 0, 9999999);
             _magnitude = baseStat;
         }
 
@@ -86,7 +90,7 @@ namespace Roguelike {
             StringBuilder s = new StringBuilder();
             Random r = new Random();
             s.Append(_materialNames[r.Next(_materialNames.Count)]);
-            s.Append(" Ring of ");
+            s.Append(" Greaves of ");
             s.Append(_verbs[r.Next(_verbs.Count)]);
 
             Name = s.ToString();

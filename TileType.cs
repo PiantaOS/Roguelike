@@ -7,6 +7,7 @@
         Enemy,
         Corridor,
         Door,
-        Exit
+        Exit,
+        Item
     }
 }

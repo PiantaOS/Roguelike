@@ -16,5 +16,13 @@ namespace Roguelike {
         protected override void RemoveStatBoost(Player player) {
             return;
         }
+
+        public override void SetRandomStatMagnitude(int floor) {
+            return;
+        }
+
+        public override void SetRandomName() {
+            return;
+        }
     }
 }

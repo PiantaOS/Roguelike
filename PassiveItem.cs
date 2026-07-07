@@ -28,5 +28,7 @@
         protected abstract void ApplyStatBoost(Player player);
 
         protected abstract void RemoveStatBoost(Player player);
+        public abstract void SetRandomStatMagnitude(int floor);
+        public abstract void SetRandomName();
     }
 }

@@ -13,12 +13,16 @@ namespace Roguelike {
             _passiveItems.Add(ItemSlotType.Chestplate, new EmptyItem());
             _passiveItems.Add(ItemSlotType.Ring, new EmptyItem());
             _passiveItems.Add(ItemSlotType.Greaves, new EmptyItem());
+            _passiveItems.Add(ItemSlotType.Helmet, new EmptyItem());
+            _passiveItems.Add(ItemSlotType.Weapon, new EmptyItem());
+            _passiveItems.Add(ItemSlotType.Gauntlets, new EmptyItem());
+            _passiveItems.Add(ItemSlotType.Shield, new EmptyItem());
             _player = player;
 
-            _heldPassives.Add(new ChestplateItem("Leather Armor", 3));
-            SwapEquippedItem(ItemSlotType.Chestplate, _heldPassives[0]);
-            _heldPassives.Add(new RingItem("Ring of Fortitude", 10));
-            _heldPassives.Add(new ChestplateItem("Iron Armor", 4));
+            //_heldPassives.Add(new ChestplateItem("Leather Armor", 3));
+           // SwapEquippedItem(ItemSlotType.Chestplate, _heldPassives[0]);
+            //_heldPassives.Add(new RingItem("Ring of Fortitude", 10));
+           // _heldPassives.Add(new ChestplateItem("Iron Armor", 4));
         }
 
         public PassiveItem SwapEquippedItem(ItemSlotType slot, PassiveItem newItem) {
@@ -37,7 +41,7 @@ namespace Roguelike {
 
         public string RenderInventory(int highlightedItem) {
             StringBuilder s = new StringBuilder();
-            highlightedItem = Math.Clamp(highlightedItem, 0, _heldPassives.Count); 
+            highlightedItem = Math.Clamp(highlightedItem, 0, _heldPassives.Count - 1); 
             s.Append("Equipment: ");
             s.AppendLine();
             for (int i = 0; i < _heldPassives.Count; i++) {
@@ -48,6 +52,19 @@ namespace Roguelike {
                 s.Append(_heldPassives[i].IsEquipped() ? "  E" : "  U");
                 s.AppendLine();
             }
+            s.AppendLine();
+            s.Append("Stats:");
+            s.AppendLine();
+            s.Append("Damage: ");
+            s.Append(_player.Damage);
+            s.AppendLine();
+            s.Append("Damage Reduction: ");
+            s.Append(_player.DamageReduction);
+            s.AppendLine();
+            s.Append("Max Health: ");
+            s.Append(_player.MaxHealth);
+            s.AppendLine();
+
             return s.ToString();
         }
 

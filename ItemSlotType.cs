@@ -9,6 +9,10 @@ namespace Roguelike {
         Chestplate,
         Ring,
         Greaves,
+        Helmet,
+        Gauntlets,
+        Shield,
+        Weapon,
 
     }
 }

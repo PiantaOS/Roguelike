@@ -16,6 +16,22 @@ namespace Roguelike {
 
             return player;
         }
+
+        public static void SpawnItems(Grid grid, int numItems) {
+            List<Vector2Int> validTiles = [];
+            for (int i = 0; i < grid.GetDimension(0); i++) {
+                for (int j = 0; j < grid.GetDimension(1); j++) {
+                    if (grid.GetTileFromCoord(new Vector2Int(i, j)) == TileType.Floor) validTiles.Add(new Vector2Int(i, j));
+                }
+            }
+            Random rand = new Random();
+
+            List<PassiveItem> items = ItemGenerator.GeneratePassiveItems(numItems);
+            for (int i = 0; i < items.Count; i++) {
+                int randomIndex = rand.Next(validTiles.Count);
+                grid.SpawnItem(validTiles[randomIndex], items[i]); // No distinction between any item and any other. Give grid a lookup table containing each item and create a function of grid called set tile at coord
+            }
+        }
         public static Player SpawnPlayer(Player player, Grid grid, int health, int damage) {
             List<Vector2Int> validTiles = new List<Vector2Int>();
             for (int i = 0; i < grid.GetDimension(0); i++) {

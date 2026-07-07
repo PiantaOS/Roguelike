@@ -5,7 +5,7 @@
         private int _health;
         public int MaxHealth { get; set; }
         public Inventory Inventory { get; set; }
-
+        public int DamageReduction { get; set; }
         public int Damage { get; set; }
         //Can change with equipment
 
@@ -19,7 +19,7 @@
         }
 
         public void TakeDamage(int damageAmount) {
-            _health -= damageAmount;
+            _health -= damageAmount - DamageReduction;
         }
         public bool IsAlive() {
             return _health > 0;
@@ -40,6 +40,9 @@
             return false;
         }
         public int GetHealth() { return _health; }
+
+        public void AddHealth(int amount) {
+            _health += amount; }
         private bool TryMove(Vector2Int direction, Grid grid, List<Enemy> enemies) {
             TileType nextTile = grid.GetTileFromCoord(_currentPosition + direction);
             if (nextTile == TileType.Player) {
@@ -62,6 +65,9 @@
                 case TileType.Corridor:
                 case TileType.Door:
                     Move(_currentPosition + direction, nextTile, grid);
+                    return true;
+                case TileType.Item:
+                    Inventory.PickupItem(grid.TakeItemFromCoord(_currentPosition + direction));
                     return true;
                 case TileType.Player:
                 case TileType.Enemy:

@@ -23,13 +23,15 @@ namespace Roguelike {
             _render.SetTileAppearance(TileType.Floor, ('.', ConsoleColor.Gray));
             _render.SetTileAppearance(TileType.Corridor, ('#', ConsoleColor.Yellow));
             _render.SetTileAppearance(TileType.Door, ('+', ConsoleColor.DarkYellow));
+            _render.SetTileAppearance(TileType.Exit, ('E', ConsoleColor.Green));
+            _render.SetTileAppearance(TileType.Item, ('I', ConsoleColor.DarkMagenta));
 
             int fullblockUnicode = int.Parse("2588", System.Globalization.NumberStyles.HexNumber);
             _render.SetTileAppearance(TileType.Wall, (Convert.ToChar(fullblockUnicode), ConsoleColor.Gray));
             _running = true;
 
             _player = GridGen.SpawnPlayer(_currentGrid, 100, 25);
-
+            GridGen.SpawnItems(_currentGrid, 5);
             const int numEnemies = 2;
             _currentGrid.InitializeEnemies(numEnemies);
             Play();
