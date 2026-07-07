@@ -8,7 +8,7 @@
         public int DamageReduction { get; set; }
         public int Damage { get; set; }
         //Can change with equipment
-
+        public bool ReachedExit = false;
         public Player(Vector2Int position, TileType tileSpawnedOn, int health, int damage) {
             _currentPosition = position;
             _stoodOnTile = tileSpawnedOn;
@@ -18,7 +18,8 @@
             Inventory = new Inventory(this);
         }
 
-        public void TakeDamage(int damageAmount) {
+        public void TakeDamage(Grid grid, int damageAmount) {
+            grid.WriteLog($"Took {damageAmount} damage");
             _health -= damageAmount - DamageReduction;
         }
         public bool IsAlive() {
@@ -42,7 +43,9 @@
         public int GetHealth() { return _health; }
 
         public void AddHealth(int amount) {
-            _health += amount; }
+            _health += amount;
+            _health = Math.Clamp(_health, 0, MaxHealth);
+        }
         private bool TryMove(Vector2Int direction, Grid grid, List<Enemy> enemies) {
             TileType nextTile = grid.GetTileFromCoord(_currentPosition + direction);
             if (nextTile == TileType.Player) {
@@ -67,11 +70,19 @@
                     Move(_currentPosition + direction, nextTile, grid);
                     return true;
                 case TileType.Item:
+                    grid.WriteLog("Picked up an item");
                     Inventory.PickupItem(grid.TakeItemFromCoord(_currentPosition + direction));
+                    return true;
+                case TileType.Exit:
+                    ReachedExit = true;
+                    return true;
+                case TileType.Heal:
+                    grid.WriteLog("Healed 25 health");
+                    AddHealth(25);
+                    Move(_currentPosition + direction, TileType.Floor, grid);
                     return true;
                 case TileType.Player:
                 case TileType.Enemy:
-                case TileType.Exit:
                 default:
                     break;
             }

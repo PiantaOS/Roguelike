@@ -63,7 +63,9 @@ namespace Roguelike {
             SlotType = ItemSlotType.Ring;
         }
 
-        public RingItem() {
+        public RingItem(int floor) {
+            SetRandomName();
+            SetRandomStatMagnitude(floor);
             SlotType = ItemSlotType.Ring;
         }
         protected override void ApplyStatBoost(Player player) {
@@ -78,7 +80,7 @@ namespace Roguelike {
 
         public override void SetRandomStatMagnitude(int floor) {
             int baseStat = (floor + 1) * 7;
-            baseStat += new Random().Next(-floor * 3, floor * 3);
+            baseStat += new Random().Next(-floor * 2, floor * 3);
             _magnitude = baseStat;
         }
 

@@ -3,6 +3,9 @@
         public int x;
         public int y;
         public static Vector2Int Zero => new Vector2Int(0, 0);
+
+        public static float Distance(Vector2Int first, Vector2Int second) =>
+            System.Numerics.Vector2.Distance(first.FloatVector, second.FloatVector);
         public System.Numerics.Vector2 FloatVector => new System.Numerics.Vector2((float)x, (float)y);
         public Vector2Int(int x, int y) {
             this.x = x;

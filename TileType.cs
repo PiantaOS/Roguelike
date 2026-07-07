@@ -8,6 +8,7 @@
         Corridor,
         Door,
         Exit,
-        Item
+        Item,
+        Heal
     }
 }

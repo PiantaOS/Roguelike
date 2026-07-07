@@ -18,9 +18,9 @@
                 }
             }
         }
-        public void InitializeEnemies(int numEnemies) {
+        public void InitializeEnemies(int numEnemies, int floor) {
             for (int i = 0; i < numEnemies; i++) {
-                Enemy enemy = GridGen.SpawnEnemy(this, 50, 25);
+                Enemy enemy = GridGen.SpawnEnemy(this, 50, 25, floor);
                 Enemies.Add(enemy);
             }
         }
