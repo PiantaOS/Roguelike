@@ -1,12 +1,22 @@
 ﻿namespace Roguelike {
-    internal class Player(Vector2Int position, TileType tileSpawnedOn, int health, int damage) {
-        private Vector2Int _currentPosition = position;
-        private TileType _stoodOnTile = tileSpawnedOn;
-        private int _health = health;
-        private readonly int _maxHealth = health;
+    internal class Player {
+        private Vector2Int _currentPosition;
+        private TileType _stoodOnTile;
+        private int _health;
+        public int MaxHealth { get; set; }
+        public Inventory Inventory { get; set; }
 
-        private readonly int _damage = damage;
+        public int Damage { get; set; }
         //Can change with equipment
+
+        public Player(Vector2Int position, TileType tileSpawnedOn, int health, int damage) {
+            _currentPosition = position;
+            _stoodOnTile = tileSpawnedOn;
+            _health = health;
+            Damage = damage;
+            MaxHealth = health;
+            Inventory = new Inventory(this);
+        }
 
         public void TakeDamage(int damageAmount) {
             _health -= damageAmount;
@@ -17,20 +27,19 @@
         public bool ReadInput(char input, Grid grid) {
             switch (input) {
                 case 'l':
-                    return TryMove(new Vector2Int(1, 0), grid, grid.Enemies); ;
+                    return TryMove(new Vector2Int(1, 0), grid, grid.Enemies);
                 case 'm':
-                    return TryMove(new Vector2Int(0, 1), grid, grid.Enemies); ;
+                    return TryMove(new Vector2Int(0, 1), grid, grid.Enemies);
                 case 'j':
-                    return TryMove(new Vector2Int(-1, 0), grid, grid.Enemies); ;
+                    return TryMove(new Vector2Int(-1, 0), grid, grid.Enemies);
                 case 'i':
-                    return TryMove(new Vector2Int(0, -1), grid, grid.Enemies); ;
+                    return TryMove(new Vector2Int(0, -1), grid, grid.Enemies);
                 case 'k':
                     return true;
             }
             return false;
         }
         public int GetHealth() { return _health; }
-        public int GetMaxHealth() { return _maxHealth; }
         private bool TryMove(Vector2Int direction, Grid grid, List<Enemy> enemies) {
             TileType nextTile = grid.GetTileFromCoord(_currentPosition + direction);
             if (nextTile == TileType.Player) {
@@ -38,7 +47,7 @@
             }
             if (nextTile == TileType.Enemy) {
                 foreach (Enemy enemy in enemies) {
-                    if (enemy.GetPosition() == _currentPosition + direction) enemy.TakeDamage(_damage, grid);
+                    if (enemy.GetPosition() == _currentPosition + direction) enemy.TakeDamage(Damage, grid);
                 }
                 return true;
             }
@@ -58,7 +67,7 @@
                 case TileType.Enemy:
                 case TileType.Exit:
                 default:
-                    return false;
+                    break;
             }
             return false;
         }

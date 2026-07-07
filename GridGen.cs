@@ -1,9 +1,6 @@
-﻿using System.Numerics;
-using static System.Net.WebRequestMethods;
-
+﻿
 namespace Roguelike {
     internal static class GridGen {
-        static int maxIterations = 5;
         public static Player SpawnPlayer(Grid grid, int health, int damage) {
             List<Vector2Int> validTiles = [];
             for (int i = 0; i < grid.GetDimension(0); i++) {
@@ -12,6 +9,7 @@ namespace Roguelike {
                 }
             }
             Random rand = new Random();
+
             int randomIndex = rand.Next(0, validTiles.Count);
             Player player = new Player(validTiles[randomIndex], TileType.Floor, health, damage);
             grid.SetTileAtCoord(validTiles[randomIndex], TileType.Player);
@@ -113,7 +111,7 @@ namespace Roguelike {
                     pos1.x += Math.Clamp(distX, -1, 1);
                     corridor.Add(new Tile(pos1, TileType.Corridor));
                     distX -= Math.Clamp(distX, -1, 1);
-                    if (Math.Abs(zip) == Math.Abs(distX)) break;
+                    if (zip == Math.Abs(distX)) break;
                 }
                 while (Math.Abs(distY) > 0) {
                     pos1.y += Math.Clamp(distY, -1, 1);
@@ -132,7 +130,7 @@ namespace Roguelike {
                     pos1.y += Math.Clamp(distY, -1, 1);
                     corridor.Add(new Tile(pos1, TileType.Corridor));
                     distY -= Math.Clamp(distY, -1, 1);
-                    if (Math.Abs(zip) == Math.Abs(distY)) break;
+                    if (zip == Math.Abs(distY)) break;
                 }
                 while (Math.Abs(distX) > 0) {
                     pos1.x += Math.Clamp(distX, -1, 1);
@@ -150,7 +148,6 @@ namespace Roguelike {
         }
         public static Grid GenerateSegmentedGrid(int x, int y, int segmentDivisions, int minRoomSize, int maxRoomSize, int roomSpawnPercent) {
             Grid grid = new Grid(x, y);
-            Random rand = new Random();
             List<Box> segments = GetSegments(segmentDivisions, x, y);
             List<Box> rooms = [];
             foreach (Box t in segments) {
@@ -183,7 +180,7 @@ namespace Roguelike {
         }
         private static Vector2Int GetCoordFromIndex(int index, int numSegments) {
             int x = (index) % numSegments;
-            int y = (int)Math.Floor((double)index / (double)numSegments);
+            int y = (int)Math.Floor(index / (double)numSegments);
 
             return new Vector2Int(x, y);
         }
@@ -196,25 +193,25 @@ namespace Roguelike {
 
             Vector2Int coords = GetCoordFromIndex(index, numSegments); // Check math
             if (coords.x != 0) {
-                Vector2Int leftWall = new Vector2Int(room.x1, random.Next(room.y1 + 1, room.y2 - 1));
+                Vector2Int leftWall = new Vector2Int(room.X1, random.Next(room.Y1 + 1, room.Y2 - 1));
                 validDoorways[0] = leftWall;
             }
             else validDoorways[0] = Vector2Int.Zero;
 
             if (coords.x != numSegments - 1) {
-                Vector2Int rightWall = new Vector2Int(room.x2 - 1, random.Next(room.y1 + 1, room.y2 - 1));
+                Vector2Int rightWall = new Vector2Int(room.X2 - 1, random.Next(room.Y1 + 1, room.Y2 - 1));
                 validDoorways[1] = rightWall;
             }
             else validDoorways[1] = Vector2Int.Zero;
 
             if (coords.y != 0) {
-                Vector2Int topWall = new Vector2Int(random.Next(room.x1 + 1, room.x2 - 1), room.y1);
+                Vector2Int topWall = new Vector2Int(random.Next(room.X1 + 1, room.X2 - 1), room.Y1);
                 validDoorways[2] = topWall;
             }
             else validDoorways[2] = Vector2Int.Zero;
 
             if (coords.y != numSegments - 1) {
-                Vector2Int bottomWall = new Vector2Int(random.Next(room.x1 + 1, room.x2 - 1), room.y2 - 1);
+                Vector2Int bottomWall = new Vector2Int(random.Next(room.X1 + 1, room.X2 - 1), room.Y2 - 1);
                 validDoorways[3] = bottomWall;
             }
             else validDoorways[3] = Vector2Int.Zero;
@@ -241,8 +238,8 @@ namespace Roguelike {
             Random random = new Random();
             int size = random.Next(minSize, maxSize);
 
-            int topLeftX = random.Next(bounds.x1, bounds.x2 - size);
-            int topLeftY = random.Next(bounds.y1, bounds.y2 - (size / 2) + 1);
+            int topLeftX = random.Next(bounds.X1, bounds.X2 - size);
+            int topLeftY = random.Next(bounds.Y1, bounds.Y2 - (size / 2) + 1);
             Vector2Int topLeft = new Vector2Int(topLeftX, topLeftY);
 
             Box room = new Box(topLeft, size, (size / 2) + 1);
@@ -252,8 +249,8 @@ namespace Roguelike {
             Random random = new Random();
             int sizeX = random.Next(minSize, maxSize);
             int sizeY = random.Next(minSize, maxSize) / 3;
-            int topLeftX = random.Next(bounds.x1, bounds.x2 - sizeX);
-            int topLeftY = random.Next(bounds.y1, bounds.y2 - sizeY);
+            int topLeftX = random.Next(bounds.X1, bounds.X2 - sizeX);
+            int topLeftY = random.Next(bounds.Y1, bounds.Y2 - sizeY);
             Vector2Int topLeft = new Vector2Int(topLeftX, topLeftY);
 
             Box room = new Box(topLeft, sizeX, sizeY);

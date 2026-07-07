@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Roguelike {
+    internal class ChestplateItem : PassiveItem {
+        public ChestplateItem(string name, int magnitude) {
+            Name = name;
+            _magnitude = magnitude;
+            SlotType = ItemSlotType.Chestplate;
+        }
+        protected override void ApplyStatBoost(Player player) {
+            //throw new NotImplementedException();
+        }
+
+        protected override void RemoveStatBoost(Player player) {
+            //throw new NotImplementedException();
+        }
+    }
+}

@@ -1,6 +1,7 @@
 ﻿namespace Roguelike {
     internal class Grid {
         private Tile[,] tiles;
+        private bool[,] gridVision;
         public List<Enemy> Enemies { get; set;  } = [];
 
         public Grid(int x, int y) {
@@ -29,7 +30,7 @@
                 SetTileAtCoord(tiles[i].Coordinate, tiles[i].TileType);
             }
         }
-
+        //public void SpawnItem(Item item)
         public bool SetTileAtCoord(Vector2Int coord, TileType tileType) {
             tiles[coord.x, coord.y].TileType = tileType;
             return true;

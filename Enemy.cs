@@ -1,28 +1,21 @@
 ﻿namespace Roguelike {
-    internal class Enemy {
-        Vector2Int currentPosition;
-        TileType stoodOnTile;
-        int health;
-        int damage;
-        public Enemy(Vector2Int position, TileType tileSpawnedOn, int health, int damage) {
-            currentPosition = position;
-            stoodOnTile = tileSpawnedOn;
-            this.health = health;
-            this.damage = damage;
-        }
-        public void TakeDamage(int damage, Grid grid) {
-            health -= damage;
+    internal class Enemy(Vector2Int position, TileType tileSpawnedOn, int health, int damage) {
+        private Vector2Int _currentPosition = position;
+        private TileType _stoodOnTile = tileSpawnedOn;
+        private int _health = health;
+        private readonly int _damage = damage;
+        public void TakeDamage(int damageAmount, Grid grid) {
+            _health -= damageAmount;
         }
         public bool IsAlive() {
-            if (health <= 0) return false;
-            return true;
+            return _health > 0;
         }
         public void RemoveSelf(Grid grid) {
-            grid.SetTileAtCoord(currentPosition, stoodOnTile);
+            grid.SetTileAtCoord(_currentPosition, _stoodOnTile);
         }
-        public Vector2Int GetPosition() { return currentPosition; }
+        public Vector2Int GetPosition() { return _currentPosition; }
         public void CalculateMoveBasic(Player player, Grid grid) {
-            Vector2Int direction = player.GetPosition() - currentPosition;
+            Vector2Int direction = player.GetPosition() - _currentPosition;
             if (Math.Abs(direction.x) > Math.Abs(direction.y)) {
                 if (TryMove(new Vector2Int(direction.Clamp().x, 0), player, grid)) { return; }
             }
@@ -30,12 +23,12 @@
             TryMove(Vector2Int.Zero, player, grid);
         }
         private bool TryMove(Vector2Int direction, Player player, Grid grid) {
-            TileType nextTile = grid.GetTileFromCoord(currentPosition + direction);
+            TileType nextTile = grid.GetTileFromCoord(_currentPosition + direction);
             if (nextTile == TileType.Enemy) {
                 return false;
             }
             if (nextTile == TileType.Player) {
-                player.TakeDamage(damage);
+                player.TakeDamage(_damage);
                 return true;
             }
             switch (nextTile) {
@@ -48,16 +41,16 @@
                 case TileType.Floor:
                 case TileType.Corridor:
                 case TileType.Door:
-                    Move(currentPosition + direction, nextTile, grid);
+                    Move(_currentPosition + direction, nextTile, grid);
                     return true;
             }
             return false;
         }
         private void Move(Vector2Int targetPosition, TileType nextTile, Grid grid) {
-            grid.SetTileAtCoord(currentPosition, stoodOnTile);
-            stoodOnTile = nextTile;
+            grid.SetTileAtCoord(_currentPosition, _stoodOnTile);
+            _stoodOnTile = nextTile;
 
-            currentPosition = targetPosition;
+            _currentPosition = targetPosition;
             grid.SetTileAtCoord(targetPosition, TileType.Enemy);
         }
     }
