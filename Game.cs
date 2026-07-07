@@ -104,7 +104,7 @@ namespace Roguelike {
                     GridGen.SpawnItems(_currentGrid, 4, _floor);
                     _currentGrid.InitializeEnemies(3 + _floor, _floor);
                     GridGen.SpawnExit(_currentGrid, 20, _player.GetPosition());
-                    GridGen.GenerateHeals(_currentGrid, 2);
+                    GridGen.GenerateHeals(_currentGrid, 2 + 1 * _floor);
 
                     Render();
                     continue;

@@ -64,7 +64,7 @@ namespace Roguelike {
         }
 
         public GauntletsItem(int floor) {
-            SlotType = ItemSlotType.Chestplate;
+            SlotType = ItemSlotType.Gauntlets;
             SetRandomStatMagnitude(floor);
             SetRandomName();
         }

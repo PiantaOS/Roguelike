@@ -50,7 +50,7 @@ namespace Roguelike {
             List<Vector2Int> validTiles = GetValidTiles(grid);
             Random rand = new Random();
             int randomIndex = rand.Next(0, validTiles.Count);
-            Enemy enemy = new Enemy(validTiles[randomIndex], TileType.Floor, health + 25 * floor, damage + 15 * floor);
+            Enemy enemy = new Enemy(validTiles[randomIndex], TileType.Floor, health + 20 * floor, damage + 10 * floor);
             grid.SetTileAtCoord(validTiles[randomIndex], TileType.Enemy);
 
             return enemy;
