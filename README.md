@@ -1,0 +1,1 @@
+This is a Rogue inspired consoleapp roguelike game with infinite procedural levels and permadeath. Movement is controlled with IJMLK for Up Left Down Right Select. The inventory can be opened with W. Each level contains enemies, items, heals, and an exit to the next floor
