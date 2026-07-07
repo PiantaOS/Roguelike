@@ -87,12 +87,15 @@ namespace Roguelike {
                 foreach (Enemy enemy in enemies) {
                     enemy.CalculateMoveBasic(_player, _currentGrid);
                 }
+
                 Render();
                 if (!_player.IsAlive()) break;
             }
         }
 
         private void Render() {
+            _currentGrid.RevealAroundPlayer(_player.GetPosition());
+
             Console.Clear();
             Console.WriteLine("\x1b[3J");
             Console.WriteLine(_render.GetGridAsText(_currentGrid));

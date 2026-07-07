@@ -109,12 +109,12 @@ namespace Roguelike {
             return corridor;
         }
         public static List<Tile> GenerateDoors(Vector2Int pos1, Vector2Int pos2) {
-            List<Tile> doors = new List<Tile>();
+            List<Tile> doors = [];
             doors.Add(new Tile(pos1, TileType.Door));
             doors.Add(new Tile(pos2, TileType.Door));
             return doors;
         }
-        public static List<Tile> GenerateCorridorZip(Vector2Int pos1, Vector2Int pos2) {
+        private static List<Tile> GenerateCorridorZip(Vector2Int pos1, Vector2Int pos2) {
             // https://bfnightly.bracketproductions.com/chapter_25.html?highlight=draw%20corridor#adding-in-corridors
             List<Tile> corridor = [];
 

@@ -10,6 +10,10 @@ namespace Roguelike {
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < grid.GetDimension(1); i++) {
                 for (int j = 0; j < grid.GetDimension(0); j++) {
+                    if (!grid.GridVision[j, i]) {
+                        stringBuilder.Append(' ');
+                        continue;
+                    }
                     _tileAppearances.TryGetValue(grid.GetTileFromCoord(new Vector2Int(j, i)), out (char value, ConsoleColor color) properties);
                     stringBuilder.Append(properties.value.ToString().Pastel(properties.color));
                 }
