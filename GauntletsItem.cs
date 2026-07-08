@@ -63,9 +63,9 @@ namespace Roguelike {
             SlotType = ItemSlotType.Gauntlets;
         }
 
-        public GauntletsItem() {
-            SlotType = ItemSlotType.Chestplate;
-            SetRandomStatMagnitude(0);
+        public GauntletsItem(int floor) {
+            SlotType = ItemSlotType.Gauntlets;
+            SetRandomStatMagnitude(floor);
             SetRandomName();
         }
         protected override void ApplyStatBoost(Player player) {
@@ -78,7 +78,7 @@ namespace Roguelike {
 
         public override void SetRandomStatMagnitude(int floor) {
             int baseStat = (floor + 1) * 2;
-            baseStat += new Random().Next(-floor, floor);
+            baseStat += new Random().Next(-floor * 2, floor * 5);
             _magnitude = baseStat;
         }
 

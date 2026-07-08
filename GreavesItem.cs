@@ -66,9 +66,9 @@ namespace Roguelike {
             SlotType = ItemSlotType.Greaves;
         }
 
-        public GreavesItem() {
+        public GreavesItem(int floor) {
             SlotType = ItemSlotType.Greaves;
-            SetRandomStatMagnitude(0);
+            SetRandomStatMagnitude(floor);
             SetRandomName();
         }
         protected override void ApplyStatBoost(Player player) {
@@ -82,7 +82,7 @@ namespace Roguelike {
         public override void SetRandomStatMagnitude(int floor) {
             int baseStat = (floor + 1) * 2;
             baseStat += new Random().Next(-floor * 8, floor * 8);
-            baseStat = Math.Clamp(baseStat, 0, 9999999);
+            baseStat = Math.Clamp(baseStat, 1, 9999999);
             _magnitude = baseStat;
         }
 

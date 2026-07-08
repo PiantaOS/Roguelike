@@ -2,12 +2,7 @@
 namespace Roguelike {
     internal static class GridGen {
         public static Player SpawnPlayer(Grid grid, int health, int damage) {
-            List<Vector2Int> validTiles = [];
-            for (int i = 0; i < grid.GetDimension(0); i++) {
-                for (int j = 0; j < grid.GetDimension(1); j++) {
-                    if (grid.GetTileFromCoord(new Vector2Int(i, j)) == TileType.Floor) validTiles.Add(new Vector2Int(i, j));
-                }
-            }
+            List<Vector2Int> validTiles = GetValidTiles(grid);
             Random rand = new Random();
 
             int randomIndex = rand.Next(0, validTiles.Count);
@@ -17,28 +12,33 @@ namespace Roguelike {
             return player;
         }
 
-        public static void SpawnItems(Grid grid, int numItems) {
-            List<Vector2Int> validTiles = [];
-            for (int i = 0; i < grid.GetDimension(0); i++) {
-                for (int j = 0; j < grid.GetDimension(1); j++) {
-                    if (grid.GetTileFromCoord(new Vector2Int(i, j)) == TileType.Floor) validTiles.Add(new Vector2Int(i, j));
+        public static void SpawnExit(Grid grid, float distance, Vector2Int playerPosition) {
+            List<Vector2Int> validTiles = GetValidTiles(grid);
+                ;
+            Vector2Int targetPos = new Vector2Int(-1, -1);
+            while (targetPos == new Vector2Int(-1, -1)) {
+                foreach (Vector2Int pos in validTiles) {
+                    if (Vector2Int.Distance(playerPosition, pos) < distance) continue;
+                    targetPos = pos;
                 }
+
+                distance--;
             }
+
+            grid.SetTileAtCoord(targetPos, TileType.Exit);
+        }
+        public static void SpawnItems(Grid grid, int numItems, int floor) {
+            List<Vector2Int> validTiles = GetValidTiles(grid);
             Random rand = new Random();
 
-            List<PassiveItem> items = ItemGenerator.GeneratePassiveItems(numItems);
+            List<PassiveItem> items = ItemGenerator.GeneratePassiveItems(numItems, floor);
             for (int i = 0; i < items.Count; i++) {
                 int randomIndex = rand.Next(validTiles.Count);
                 grid.SpawnItem(validTiles[randomIndex], items[i]); // No distinction between any item and any other. Give grid a lookup table containing each item and create a function of grid called set tile at coord
             }
         }
-        public static Player SpawnPlayer(Player player, Grid grid, int health, int damage) {
-            List<Vector2Int> validTiles = new List<Vector2Int>();
-            for (int i = 0; i < grid.GetDimension(0); i++) {
-                for (int j = 0; j < grid.GetDimension(1); j++) {
-                    if (grid.GetTileFromCoord(new Vector2Int(i, j)) == TileType.Floor) validTiles.Add(new Vector2Int(i, j));
-                }
-            }
+        public static Player SpawnPlayer(Player player, Grid grid) {
+            List<Vector2Int> validTiles = GetValidTiles(grid);
             Random rand = new Random();
             int randomIndex = rand.Next(0, validTiles.Count);
             player.SetNewPosition(validTiles[randomIndex]);
@@ -46,21 +46,35 @@ namespace Roguelike {
 
             return player;
         }
-        public static Enemy SpawnEnemy(Grid grid, int health, int damage) {
+        public static Enemy SpawnEnemy(Grid grid, int health, int damage, int floor) {
+            List<Vector2Int> validTiles = GetValidTiles(grid);
+            Random rand = new Random();
+            int randomIndex = rand.Next(0, validTiles.Count);
+            Enemy enemy = new Enemy(validTiles[randomIndex], TileType.Floor, health + 20 * floor, damage + 10 * floor);
+            grid.SetTileAtCoord(validTiles[randomIndex], TileType.Enemy);
+
+            return enemy;
+        }
+
+        public static void GenerateHeals(Grid grid, int numHeals) {
+            List<Vector2Int> validTiles = GetValidTiles(grid);
+            Random rand = new Random();
+            int randomIndex = rand.Next(0, validTiles.Count);
+
+            grid.SetTileAtCoord(validTiles[randomIndex], TileType.Heal);
+        }
+
+        private static List<Vector2Int> GetValidTiles(Grid grid) {
             List<Vector2Int> validTiles = [];
             for (int i = 0; i < grid.GetDimension(0); i++) {
                 for (int j = 0; j < grid.GetDimension(1); j++) {
                     if (grid.GetTileFromCoord(new Vector2Int(i, j)) == TileType.Floor) validTiles.Add(new Vector2Int(i, j));
                 }
             }
-            Random rand = new Random();
-            int randomIndex = rand.Next(0, validTiles.Count);
-            Enemy enemy = new Enemy(validTiles[randomIndex], TileType.Floor, health, damage);
-            grid.SetTileAtCoord(validTiles[randomIndex], TileType.Enemy);
 
-            return enemy;
+            return validTiles;
         }
-        public static List<Tile> GenerateRoomTiles(Box param) {
+        private static List<Tile> GenerateRoomTiles(Box param) {
             List<Tile> room = [];
             for (int i = 0; i < param.SizeY; i++) {
                 for (int j = 0; j < param.SizeX; j++) {
@@ -86,9 +100,6 @@ namespace Roguelike {
             }
             return room;
         }
-        public static void AddExit(Vector2Int coords, Grid grid) {
-            grid.SetTileAtCoord(coords, TileType.Exit);
-        }
         
         //6 is the minimum room size that looks good
         public static List<Tile> GenerateCorridorDiagonal(Vector2Int pos1, Vector2Int pos2) {
@@ -108,13 +119,13 @@ namespace Roguelike {
             }
             return corridor;
         }
-        public static List<Tile> GenerateDoors(Vector2Int pos1, Vector2Int pos2) {
-            List<Tile> doors = new List<Tile>();
+        private static List<Tile> GenerateDoors(Vector2Int pos1, Vector2Int pos2) {
+            List<Tile> doors = [];
             doors.Add(new Tile(pos1, TileType.Door));
             doors.Add(new Tile(pos2, TileType.Door));
             return doors;
         }
-        public static List<Tile> GenerateCorridorZip(Vector2Int pos1, Vector2Int pos2) {
+        private static List<Tile> GenerateCorridorZip(Vector2Int pos1, Vector2Int pos2) {
             // https://bfnightly.bracketproductions.com/chapter_25.html?highlight=draw%20corridor#adding-in-corridors
             List<Tile> corridor = [];
 

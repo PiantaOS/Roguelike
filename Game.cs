@@ -9,6 +9,7 @@ namespace Roguelike {
         private Grid _currentGrid;
         private bool _running;
         private bool _inInventory = false;
+        private int _floor;
         public Game() {
             Initialize();
         }
@@ -17,7 +18,7 @@ namespace Roguelike {
             _currentGrid = GridGen.GenerateSegmentedGrid(75, 25, 3, 14, 18, 95);
 
             _render = new GridRender();
-            _render.SetTileAppearance(TileType.Empty, ('_', ConsoleColor.White));
+            _render.SetTileAppearance(TileType.Empty, (' ', ConsoleColor.White));
             _render.SetTileAppearance(TileType.Player, ('@', ConsoleColor.Blue));
             _render.SetTileAppearance(TileType.Enemy, ('X', ConsoleColor.Red));
             _render.SetTileAppearance(TileType.Floor, ('.', ConsoleColor.Gray));
@@ -25,15 +26,18 @@ namespace Roguelike {
             _render.SetTileAppearance(TileType.Door, ('+', ConsoleColor.DarkYellow));
             _render.SetTileAppearance(TileType.Exit, ('E', ConsoleColor.Green));
             _render.SetTileAppearance(TileType.Item, ('I', ConsoleColor.DarkMagenta));
+            _render.SetTileAppearance(TileType.Heal, ('H', ConsoleColor.Magenta));
 
             int fullblockUnicode = int.Parse("2588", System.Globalization.NumberStyles.HexNumber);
             _render.SetTileAppearance(TileType.Wall, (Convert.ToChar(fullblockUnicode), ConsoleColor.Gray));
             _running = true;
 
             _player = GridGen.SpawnPlayer(_currentGrid, 100, 25);
-            GridGen.SpawnItems(_currentGrid, 5);
+            GridGen.SpawnItems(_currentGrid, 4, _floor);
             const int numEnemies = 2;
-            _currentGrid.InitializeEnemies(numEnemies);
+            _currentGrid.InitializeEnemies(numEnemies, _floor);
+            GridGen.SpawnExit(_currentGrid, 20, _player.GetPosition());
+            GridGen.GenerateHeals(_currentGrid, 2);
             Play();
         }
 
@@ -81,18 +85,37 @@ namespace Roguelike {
                 List<Enemy> enemies = _currentGrid.Enemies;
                 for (int i = 0; i < enemies.Count; i++) {
                     if (enemies[i].IsAlive()) continue;
+                    _currentGrid.WriteLog("Killed an enemy");
                     enemies[i].RemoveSelf(_currentGrid);
                     enemies.Remove(enemies[i]);
                 }
                 foreach (Enemy enemy in enemies) {
+                    enemy.CheckIfSeen(_currentGrid);
+                    if (!enemy.IsActive) continue;
                     enemy.CalculateMoveBasic(_player, _currentGrid);
                 }
+
                 Render();
+                if (_player.ReachedExit) {
+                    _floor++;
+                    _player.ReachedExit = false;
+                    _currentGrid = GridGen.GenerateSegmentedGrid(75, 25, 3, 14, 18, 95);
+                    GridGen.SpawnPlayer(_player, _currentGrid);
+                    GridGen.SpawnItems(_currentGrid, 4, _floor);
+                    _currentGrid.InitializeEnemies(3 + _floor, _floor);
+                    GridGen.SpawnExit(_currentGrid, 20, _player.GetPosition());
+                    GridGen.GenerateHeals(_currentGrid, 2 + 1 * _floor);
+
+                    Render();
+                    continue;
+                }
                 if (!_player.IsAlive()) break;
             }
         }
 
         private void Render() {
+            _currentGrid.RevealAroundPlayer(_player.GetPosition());
+
             Console.Clear();
             Console.WriteLine("\x1b[3J");
             Console.WriteLine(_render.GetGridAsText(_currentGrid));

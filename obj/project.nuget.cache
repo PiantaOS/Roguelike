@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "tnyDJw611VBZYlrLXKkJe//wRWQi1QVtn39Lg72D1a+4F/3qq5cxKTUIuOO6jfvvt8fhMijE/wau/C5jhIqajQ==",
+  "dgSpecHash": "50MHmZUIBvU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\monst\\Documents\\Roguelike\\Roguelike\\Roguelike.csproj",
+  "projectFilePath": "/Users/jerryzhu/Documents/Projects/Roguelike/Roguelike.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\monst\\.nuget\\packages\\pastel\\7.0.1\\pastel.7.0.1.nupkg.sha512"
+    "/Users/jerryzhu/.nuget/packages/pastel/7.0.1/pastel.7.0.1.nupkg.sha512",
+    "/Users/jerryzhu/.nuget/packages/microsoft.netcore.app.ref/8.0.26/microsoft.netcore.app.ref.8.0.26.nupkg.sha512",
+    "/Users/jerryzhu/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.26/microsoft.aspnetcore.app.ref.8.0.26.nupkg.sha512",
+    "/Users/jerryzhu/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.26/microsoft.netcore.app.host.osx-arm64.8.0.26.nupkg.sha512"
   ],
   "logs": []
 }

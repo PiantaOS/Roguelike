@@ -65,9 +65,9 @@ namespace Roguelike {
             SlotType = ItemSlotType.Helmet;
         }
 
-        public HelmetItem() {
+        public HelmetItem(int floor) {
             SlotType = ItemSlotType.Helmet;
-            SetRandomStatMagnitude(0);
+            SetRandomStatMagnitude(floor);
             SetRandomName();
         }
         protected override void ApplyStatBoost(Player player) {
@@ -80,7 +80,8 @@ namespace Roguelike {
 
         public override void SetRandomStatMagnitude(int floor) {
             int baseStat = (floor + 1) * 3;
-            baseStat += new Random().Next(-floor, floor);
+            baseStat += new Random().Next(-floor * 8, floor * 6);
+            baseStat = Math.Clamp(baseStat, 1, 9999);
             _magnitude = baseStat;
         }
 

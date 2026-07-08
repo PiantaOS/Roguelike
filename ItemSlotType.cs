@@ -13,6 +13,5 @@ namespace Roguelike {
         Gauntlets,
         Shield,
         Weapon,
-
     }
 }

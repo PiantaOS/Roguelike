@@ -16,7 +16,6 @@ namespace Roguelike {
             "Titanium",
             "Copper",
             "Diamond",
-            "Chainmail",
             "Steel"
         ];
 
@@ -69,9 +68,9 @@ namespace Roguelike {
             SlotType = ItemSlotType.Weapon;
         }
 
-        public WeaponItem() {
+        public WeaponItem(int floor) {
             SlotType = ItemSlotType.Weapon;
-            SetRandomStatMagnitude(0);
+            SetRandomStatMagnitude(floor);
             SetRandomName();
         }
         protected override void ApplyStatBoost(Player player) {

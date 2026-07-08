@@ -31,7 +31,6 @@ namespace Roguelike {
 
             newItem.ToggleEquipped(_player);
             _passiveItems[slot] = newItem;
-
             return oldItem;
         }
 
@@ -48,7 +47,6 @@ namespace Roguelike {
                 s.Append(i == highlightedItem ? '*' : '-');
 
                 s.Append(_heldPassives[i].Name);
-
                 s.Append(_heldPassives[i].IsEquipped() ? "  E" : "  U");
                 s.AppendLine();
             }
